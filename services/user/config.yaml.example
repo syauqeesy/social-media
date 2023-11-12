@@ -1,0 +1,10 @@
+application:
+  address:
+  base_url:
+  secret:
+database:
+  user:
+  password:
+  host:
+  port:
+  database:
