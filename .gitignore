@@ -1,3 +1,6 @@
+# Ignored files & folders
+service/config.yaml
+
 ### Linux ###
 *~
 
