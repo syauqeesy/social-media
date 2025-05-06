@@ -3,12 +3,15 @@ import { string } from "yup";
 import User from "./user";
 import { PostInfo } from "../type/post";
 import { USER_CANNOT_BE_NULL } from "../exception/post";
+import Attachment from "./attachment";
+import { AttachmentInfo } from "../type/attachment";
 
 export interface PostModel {
   id?: string;
   user_id: string;
   user?: User;
   caption: string;
+  attachments: Attachment[];
   created_at?: number;
   updated_at?: number | null;
   deleted_at?: number | null;
@@ -19,17 +22,18 @@ class Post {
   private user_id!: string;
   private user?: User;
   private caption!: string;
+  private attachments!: Attachment[];
   private created_at!: number;
   private updated_at: number | null = null;
   private deleted_at: number | null = null;
 
-  public constructor(userToken: PostModel) {
-    this.setId(userToken.id);
-    this.setUserId(userToken.user_id);
-    this.setCaption(userToken.caption);
-    this.setCreatedAt(userToken.created_at);
-    if (userToken.updated_at) this.setUpdatedAt(userToken.updated_at);
-    if (userToken.deleted_at) this.setDeletedAt(userToken.deleted_at);
+  public constructor(post: PostModel) {
+    this.setId(post.id);
+    this.setUserId(post.user_id);
+    this.setCaption(post.caption);
+    this.setCreatedAt(post.created_at);
+    if (post.updated_at) this.setUpdatedAt(post.updated_at);
+    if (post.deleted_at) this.setDeletedAt(post.deleted_at);
   }
 
   public setId(id?: string): void {
@@ -54,6 +58,10 @@ class Post {
     rules.validateSync(accessToken);
 
     this.caption = accessToken;
+  }
+
+  public setAttachments(attachments: Attachment[]): void {
+    this.attachments = attachments;
   }
 
   public setCreatedAt(createdAt?: number): void {
@@ -84,6 +92,10 @@ class Post {
     return this.caption;
   }
 
+  public getAttachments(): Attachment[] {
+    return this.attachments;
+  }
+
   public getCreatedAt(): number {
     return this.created_at;
   }
@@ -96,15 +108,22 @@ class Post {
     return this.deleted_at;
   }
 
-  public getInfo(): PostInfo {
+  public getInfo(baseUrl: string): PostInfo {
     const user = this.getUser();
 
     if (!user) throw USER_CANNOT_BE_NULL;
+
+    const attachmentInfos: AttachmentInfo[] = [];
+
+    for (const attachment of this.getAttachments()) {
+      attachmentInfos.push(attachment.getInfo(baseUrl));
+    }
 
     const info: PostInfo = {
       id: this.getId(),
       user: user.getInfo(),
       caption: this.getCaption(),
+      attachments: attachmentInfos,
       created_at: this.getCreatedAt(),
       updated_at: this.getUpdatedAt(),
     };
