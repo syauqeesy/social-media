@@ -3,6 +3,7 @@ import { boolean, number, string } from "yup";
 
 export interface UserTokenModel {
   id?: string;
+  user_id: string;
   refresh_token: string;
   access_token: string;
   is_revoked: boolean;
@@ -13,6 +14,7 @@ export interface UserTokenModel {
 
 class UserToken {
   private id!: string;
+  private user_id!: string;
   private refresh_token!: string;
   private access_token!: string;
   private is_revoked!: boolean;
@@ -22,6 +24,7 @@ class UserToken {
 
   public constructor(userToken: UserTokenModel) {
     this.setId(userToken.id);
+    this.setUserId(userToken.user_id);
     this.setRefreshToken(userToken.refresh_token);
     this.setAccessToken(userToken.access_token);
     this.setIsRevoked(userToken.is_revoked);
@@ -32,6 +35,14 @@ class UserToken {
 
   public setId(id?: string): void {
     this.id = id ? id : uuid();
+  }
+
+  public setUserId(userId: string): void {
+    const rules = string().required();
+
+    rules.validateSync(userId);
+
+    this.user_id = userId;
   }
 
   public setRefreshToken(refreshToken: string): void {
@@ -72,6 +83,10 @@ class UserToken {
 
   public getId(): string {
     return this.id;
+  }
+
+  public getUserId(): string {
+    return this.user_id;
   }
 
   public getRefreshToken(): string {

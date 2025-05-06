@@ -1,47 +1,50 @@
 import { v7 as uuid } from "uuid";
 import { string } from "yup";
 import User from "./user";
-import { PostInfo } from "../type/post";
-import { USER_CANNOT_BE_NULL } from "../exception/post";
-import Attachment from "./attachment";
-import { AttachmentInfo } from "../type/attachment";
 import { CommentInfo } from "../type/comment";
-import Comment from "./comment";
+import { USER_CANNOT_BE_NULL } from "../exception/post";
 
-export interface PostModel {
+export interface CommentModel {
   id?: string;
+  post_id: string;
   user_id: string;
   user?: User;
-  caption: string;
-  attachments: Attachment[];
-  comments: Comment[];
+  content: string;
   created_at?: number;
   updated_at?: number | null;
   deleted_at?: number | null;
 }
 
-class Post {
+class Comment {
   private id!: string;
+  private post_id!: string;
   private user_id!: string;
   private user?: User;
-  private caption!: string;
-  private attachments!: Attachment[];
-  private comments!: Comment[];
+  private content!: string;
   private created_at!: number;
   private updated_at: number | null = null;
   private deleted_at: number | null = null;
 
-  public constructor(post: PostModel) {
-    this.setId(post.id);
-    this.setUserId(post.user_id);
-    this.setCaption(post.caption);
-    this.setCreatedAt(post.created_at);
-    if (post.updated_at) this.setUpdatedAt(post.updated_at);
-    if (post.deleted_at) this.setDeletedAt(post.deleted_at);
+  public constructor(comment: CommentModel) {
+    this.setId(comment.id);
+    this.setPostId(comment.post_id);
+    this.setUserId(comment.user_id);
+    this.setContent(comment.content);
+    this.setCreatedAt(comment.created_at);
+    if (comment.updated_at) this.setUpdatedAt(comment.updated_at);
+    if (comment.deleted_at) this.setDeletedAt(comment.deleted_at);
   }
 
   public setId(id?: string): void {
     this.id = id ? id : uuid();
+  }
+
+  public setPostId(postId: string): void {
+    const rules = string().required();
+
+    rules.validateSync(postId);
+
+    this.post_id = postId;
   }
 
   public setUserId(userId: string): void {
@@ -56,20 +59,12 @@ class Post {
     this.user = user;
   }
 
-  public setCaption(caption: string): void {
+  public setContent(accessToken: string): void {
     const rules = string().required();
 
-    rules.validateSync(caption);
+    rules.validateSync(accessToken);
 
-    this.caption = caption;
-  }
-
-  public setAttachments(attachments: Attachment[]): void {
-    this.attachments = attachments;
-  }
-
-  public setComments(comments: Comment[]): void {
-    this.comments = comments;
+    this.content = accessToken;
   }
 
   public setCreatedAt(createdAt?: number): void {
@@ -88,6 +83,10 @@ class Post {
     return this.id;
   }
 
+  public getPostId(): string {
+    return this.post_id;
+  }
+
   public getUserId(): string {
     return this.user_id;
   }
@@ -96,16 +95,8 @@ class Post {
     return this.user;
   }
 
-  public getCaption(): string {
-    return this.caption;
-  }
-
-  public getAttachments(): Attachment[] {
-    return this.attachments;
-  }
-
-  public getComments(): Comment[] {
-    return this.comments;
+  public getContent(): string {
+    return this.content;
   }
 
   public getCreatedAt(): number {
@@ -120,35 +111,20 @@ class Post {
     return this.deleted_at;
   }
 
-  public getInfo(baseUrl: string): PostInfo {
+  public getInfo(): CommentInfo {
     const user = this.getUser();
 
     if (!user) throw USER_CANNOT_BE_NULL;
 
-    const attachmentInfos: AttachmentInfo[] = [];
-
-    for (const attachment of this.getAttachments()) {
-      attachmentInfos.push(attachment.getInfo(baseUrl));
-    }
-
-    const commentInfos: CommentInfo[] = [];
-
-    for (const comment of this.getComments()) {
-      commentInfos.push(comment.getInfo());
-    }
-
-    const info: PostInfo = {
+    const info: CommentInfo = {
       id: this.getId(),
       user: user.getInfo(),
-      caption: this.getCaption(),
-      attachments: attachmentInfos,
-      comments: commentInfos,
+      content: this.getContent(),
       created_at: this.getCreatedAt(),
-      updated_at: this.getUpdatedAt(),
     };
 
     return info;
   }
 }
 
-export default Post;
+export default Comment;
