@@ -1,0 +1,34 @@
+{
+  "name": "social-media",
+  "version": "1.0.0",
+  "description": "Social Media API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./dist/index.js",
+    "start-dev": "nodemon ./dist/index.js",
+    "typescript": "tsc",
+    "typescript-watch": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syauqeesy/social-media.git"
+  },
+  "keywords": [
+    "TypeScript",
+    "Express",
+    "MySQL"
+  ],
+  "author": "Ahmad Syauqi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/syauqeesy/social-media/issues"
+  },
+  "homepage": "https://github.com/syauqeesy/social-media#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "nodemon": "^3.1.10"
+  }
+}
