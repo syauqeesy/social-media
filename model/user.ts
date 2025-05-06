@@ -13,7 +13,7 @@ interface UserModel {
   id?: string;
   username: string;
   password?: string;
-  avatar?: string | null;
+  avatar: string;
   created_at?: number;
   updated_at?: number | null;
   deleted_at?: number | null;
@@ -23,7 +23,7 @@ class User {
   private id!: string;
   private username!: string;
   private password!: string;
-  private avatar!: string | null;
+  private avatar!: string;
   private created_at!: number;
   private updated_at: number | null = null;
   private deleted_at: number | null = null;
@@ -32,6 +32,7 @@ class User {
     this.setId(user.id);
     this.setUsername(user.username);
     if (user.password) this.password = user.password;
+    this.setAvatar(user.avatar);
     this.setCreatedAt(user.created_at);
     if (user.updated_at) this.setUpdatedAt(user.updated_at);
     if (user.deleted_at) this.setDeletedAt(user.deleted_at);
@@ -84,6 +85,14 @@ class User {
     this.password = hash(password, salt);
   }
 
+  public setAvatar(avatar: string): void {
+    const rules = string().required();
+
+    rules.validateSync(avatar);
+
+    this.avatar = avatar;
+  }
+
   public setCreatedAt(createdAt?: number): void {
     this.created_at = createdAt ? createdAt : Date.now();
   }
@@ -128,7 +137,7 @@ class User {
     const info: UserInfo = {
       id: this.getId(),
       username: this.getUsername(),
-      avatar: this.getUsername(),
+      avatar: this.getAvatar(),
       created_at: this.getCreatedAt(),
     };
 
