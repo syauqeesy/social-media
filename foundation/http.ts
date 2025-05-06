@@ -6,19 +6,36 @@ import { Bootable } from "./foundation";
 import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpStatusMessage } from "../enum/http-status-message";
 import { writeResponse } from "./helper";
+import Database, { Queryable, Transactionable } from "./database";
 
 class Http implements Bootable {
   private configuration: Configuration;
   private application: Application;
+  private database: Bootable & Queryable & Transactionable;
 
   private server!: Server;
 
   constructor() {
     this.configuration = configuration;
     this.application = express();
+    this.database = new Database({
+      host: this.configuration.database.host,
+      port: this.configuration.database.port,
+      user: this.configuration.database.user,
+      password: this.configuration.database.password,
+      database: this.configuration.database.name,
+    });
   }
 
   public async boot(): Promise<void> {
+    this.database.boot();
+
+    const [result] = await this.database.withConnection(
+      async (conn) => await conn.execute("SELECT NOW() AS THIS_MOMENT")
+    );
+
+    console.log(result);
+
     this.application.use(json());
 
     this.application.use(
@@ -53,6 +70,12 @@ class Http implements Bootable {
   }
 
   public async shutdown(): Promise<void> {
+    if (!this.server || !this.database) return;
+
+    await this.database.shutdown();
+
+    console.log("database stopped");
+
     this.server.close((error) => {
       if (!error) console.log("server stopped");
     });
