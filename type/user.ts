@@ -4,3 +4,7 @@ export interface UserInfo {
   avatar: string | null;
   created_at: number;
 }
+
+export interface LoginResponse {
+  token: string;
+}

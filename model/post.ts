@@ -139,7 +139,7 @@ class Post {
 
     const info: PostInfo = {
       id: this.getId(),
-      user: user.getInfo(),
+      user: user.getInfo(baseUrl),
       caption: this.getCaption(),
       attachments: attachmentInfos,
       comments: commentInfos,

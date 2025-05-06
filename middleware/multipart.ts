@@ -1,7 +1,10 @@
 import { Request } from "express";
 import multer, { FileFilterCallback } from "multer";
 import { v7 as uuid } from "uuid";
-import { INVALID_MIME_TYPE } from "../exception/multipart";
+import {
+  INVALID_MIME_TYPE,
+  UNACCEPTABLE_PAYLOAD,
+} from "../exception/multipart";
 
 const storage = multer.diskStorage({
   destination: function (
@@ -9,7 +12,17 @@ const storage = multer.diskStorage({
     file: Express.Multer.File,
     callback: (error: Error | null, destination: string) => void
   ) {
-    callback(null, "./storage");
+    let destination = "";
+
+    switch (request.path) {
+      case "/api/v1/user":
+        destination = "./storage/avatar";
+        break;
+      default:
+        return callback(UNACCEPTABLE_PAYLOAD, destination);
+    }
+
+    callback(null, destination);
   },
   filename: function (
     request: Request,

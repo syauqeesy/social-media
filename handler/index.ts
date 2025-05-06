@@ -1,4 +1,46 @@
-import { Application } from "express";
+import { Application, Request, Response } from "express";
+import authentication from "../middleware/authentication";
+import upload from "../middleware/upload";
+import multipart from "../middleware/multipart";
 import { service } from "../service";
 
-export const initHandler = (application: Application, service: service) => {};
+import user from "./user";
+import { RequestWithUserId } from "../type/common";
+
+export type handlerFunction = (
+  request: Request,
+  response: Response,
+  service: service
+) => Promise<void>;
+
+export const initHandler = (application: Application, service: service) => {
+  application.post(
+    "/api/v1/user",
+    [upload(multipart.single("avatar"))],
+    (request: Request, response: Response) =>
+      user.register(request, response, service)
+  );
+  application.post(
+    "/api/v1/user/login",
+    (request: Request, response: Response) =>
+      user.login(request, response, service)
+  );
+  application.get(
+    "/api/v1/user",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      user.show(request, response, service)
+  );
+  application.patch(
+    "/api/v1/user",
+    [authentication, upload(multipart.single("avatar"))],
+    (request: RequestWithUserId, response: Response) =>
+      user.edit(request, response, service)
+  );
+  application.post(
+    "/api/v1/user/logout",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      user.logout(request, response, service)
+  );
+};

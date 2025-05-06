@@ -6,6 +6,11 @@ export const USERNAME_ALREADY_USED = new HttpException(
   HttpStatusCode.BadRequest
 );
 
+export const AVATAR_IS_REQUIRED = new HttpException(
+  "avatar is required",
+  HttpStatusCode.BadRequest
+);
+
 export const USER_NOT_FOUND = new HttpException(
   "user not found",
   HttpStatusCode.NotFound

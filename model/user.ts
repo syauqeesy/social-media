@@ -133,11 +133,11 @@ class User {
     return this.deleted_at;
   }
 
-  public getInfo(): UserInfo {
+  public getInfo(baseUrl: string): UserInfo {
     const info: UserInfo = {
       id: this.getId(),
       username: this.getUsername(),
-      avatar: this.getAvatar(),
+      avatar: baseUrl + "/storage/avatar/" + this.getAvatar(),
       created_at: this.getCreatedAt(),
     };
 
