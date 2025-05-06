@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/syauqeesy/social-media#readme",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^5.1.0"
   },
   "devDependencies": {
