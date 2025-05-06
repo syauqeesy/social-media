@@ -7,6 +7,9 @@ import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpStatusMessage } from "../enum/http-status-message";
 import { writeResponse } from "./helper";
 import Database, { Queryable, Transactionable } from "./database";
+import { initHandler } from "../handler";
+import { initService } from "../service";
+import { initRepository } from "../repository";
 
 class Http implements Bootable {
   private configuration: Configuration;
@@ -45,6 +48,15 @@ class Http implements Bootable {
 
     this.application.disable("x-powered-by");
     this.application.disable("etag");
+
+    initHandler(
+      this.application,
+      initService(
+        this.configuration,
+        initRepository(this.database),
+        this.database
+      )
+    );
 
     this.application.use((_: Request, response: Response) =>
       writeResponse(
