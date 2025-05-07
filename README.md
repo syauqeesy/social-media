@@ -26,7 +26,7 @@ You can import the postman api docs using this [social-media-api-docs.json](./so
 
 ## Security Features
 ### Authentication and Authorization
-Some API are protected by authentication and authorization like in update and delete api, the authentication is using JWT and the tokens are stored in database for added security for manual invocation if the `access_token` is compromised and make sure that after the user logged out the token can't be used. The current user must be the owner of the resource if it want to modify it.
+Some API are protected by authentication and authorization like in update and delete api, current user must be the owner of the resource if it want to modify it. The authentication is using JWT and the tokens are stored in database for added security for manual invocation if the `access_token` is compromised and make sure that after the user logged out the token can't be used.
 
 ### Input Validation
 All of the user input including body, path params and query params are validated before entering the service layer.
