@@ -6,3 +6,8 @@ export const UNAUTHORIZED = new HttpException(
   HttpStatusMessage[HttpStatusCode.Unauthorized],
   HttpStatusCode.Unauthorized
 );
+
+export const INVALID_FILE_UPLOAD = new HttpException(
+  "invalid file upload",
+  HttpStatusCode.BadRequest
+);
