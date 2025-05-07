@@ -6,6 +6,7 @@ import { service } from "../service";
 
 import user from "./user";
 import { RequestWithUserId } from "../type/common";
+import post from "./post";
 
 export type handlerFunction = (
   request: Request,
@@ -14,6 +15,7 @@ export type handlerFunction = (
 ) => Promise<void>;
 
 export const initHandler = (application: Application, service: service) => {
+  // User
   application.post(
     "/api/v1/user",
     [upload(multipart.single("avatar"))],
@@ -42,5 +44,31 @@ export const initHandler = (application: Application, service: service) => {
     [authentication],
     (request: RequestWithUserId, response: Response) =>
       user.logout(request, response, service)
+  );
+
+  // Post
+  application.get(
+    "/api/v1/post/:id",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      post.show(request, response, service)
+  );
+  application.post(
+    "/api/v1/post",
+    [authentication, upload(multipart.array("attachments", 5))],
+    (request: RequestWithUserId, response: Response) =>
+      post.create(request, response, service)
+  );
+  application.patch(
+    "/api/v1/post/:id",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      post.edit(request, response, service)
+  );
+  application.delete(
+    "/api/v1/post/:id",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      post.delete(request, response, service)
   );
 };

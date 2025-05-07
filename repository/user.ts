@@ -6,7 +6,7 @@ export interface UserRepository {
   selectByUsername(username: string): Promise<UserModel | null>;
   selectById(id: string): Promise<UserModel | null>;
   insert(user: UserModel): Promise<void>;
-  update(user: UserModel): Promise<void>;
+  updateTx(tx: PoolConnection, user: UserModel): Promise<void>;
 }
 
 export class User extends Repository implements UserRepository {
@@ -77,12 +77,20 @@ export class User extends Repository implements UserRepository {
     );
   }
 
-  public async update(user: UserModel): Promise<void> {
-    return this.database.withConnection<void>(
-      async (poolConnection: PoolConnection): Promise<void> => {
-        await poolConnection.query(
-          "UPDATE users SET password = ?, avatar = ? WHERE id = ? AND deleted_at IS NULL",
-          [user.getPassword(), user.getAvatar(), user.getId()]
+  public async updateTx(tx: PoolConnection, user: UserModel): Promise<void> {
+    return this.database.withTransaction<void>(
+      tx,
+      async (tx: PoolConnection): Promise<void> => {
+        user.setUpdatedAt();
+
+        await tx.query(
+          "UPDATE users SET password = ?, avatar = ?, updated_at = ? WHERE id = ? AND deleted_at IS NULL",
+          [
+            user.getPassword(),
+            user.getAvatar(),
+            user.getUpdatedAt(),
+            user.getId(),
+          ]
         );
       }
     );

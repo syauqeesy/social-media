@@ -1,10 +1,12 @@
 import { Transactionable } from "../repository/database";
 import { Configuration } from "../foundation/configuration";
 import { repository } from "../repository";
-import { UserService, User } from "./user";
+import { User, UserService } from "./user";
+import { Post, PostService } from "./post";
 
 export interface service {
   user: UserService;
+  post: PostService;
 }
 
 export const initService = (
@@ -14,6 +16,7 @@ export const initService = (
 ) => {
   const s: service = {
     user: new User(configuration, repository, database),
+    post: new Post(configuration, repository, database),
   };
 
   return s;

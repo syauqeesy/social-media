@@ -10,6 +10,7 @@ export interface UserTokenRepository {
   insert(userToken: UserTokenModel): Promise<void>;
   update(userToken: UserTokenModel): Promise<void>;
   delete(userToken: UserTokenModel): Promise<void>;
+  deleteTx(tx: PoolConnection, userToken: UserTokenModel): Promise<void>;
 }
 
 export class UserToken extends Repository implements UserTokenRepository {
@@ -80,6 +81,20 @@ export class UserToken extends Repository implements UserTokenRepository {
     return this.database.withConnection<void>(
       async (poolConnection: PoolConnection): Promise<void> => {
         await poolConnection.query("DELETE FROM user_tokens WHERE id = ?", [
+          userToken.getId(),
+        ]);
+      }
+    );
+  }
+
+  public async deleteTx(
+    tx: PoolConnection,
+    userToken: UserTokenModel
+  ): Promise<void> {
+    return this.database.withTransaction<void>(
+      tx,
+      async (tx: PoolConnection): Promise<void> => {
+        await tx.query("DELETE FROM user_tokens WHERE id = ?", [
           userToken.getId(),
         ]);
       }

@@ -13,8 +13,8 @@ export interface PostModel {
   user_id: string;
   user?: User;
   caption: string;
-  attachments: Attachment[];
-  comments: Comment[];
+  attachments?: Attachment[];
+  comments?: Comment[];
   created_at?: number;
   updated_at?: number | null;
   deleted_at?: number | null;
@@ -134,7 +134,7 @@ class Post {
     const commentInfos: CommentInfo[] = [];
 
     for (const comment of this.getComments()) {
-      commentInfos.push(comment.getInfo());
+      commentInfos.push(comment.getInfo(baseUrl));
     }
 
     const info: PostInfo = {

@@ -103,7 +103,7 @@ class Attachment {
     const info: AttachmentInfo = {
       id: this.getId(),
       url: this.getName(),
-      original_name: baseUrl + "/assets/attachment/" + this.getOriginalName(),
+      original_name: baseUrl + "/storage/attachment/" + this.getName(),
     };
 
     return info;

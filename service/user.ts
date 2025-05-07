@@ -12,6 +12,7 @@ import {
 import { LoginRequest } from "../request/login";
 import { EditUserRequest } from "./edit-user";
 import { UNAUTHORIZED } from "../exception/common";
+import { PoolConnection } from "mysql2/promise";
 
 export interface UserService {
   register(request: RegisterRequest): Promise<UserInfo>;
@@ -83,23 +84,27 @@ export class User extends Service implements UserService {
 
     if (request.avatar) user.setAvatar(request.avatar);
 
-    if (request.old_password && request.new_password_confirmation) {
-      if (!user.comparePassword(request.old_password)) throw PASSWORD_WRONG;
+    await this.database.transaction(
+      async (tx: PoolConnection): Promise<void> => {
+        if (request.old_password && request.new_password_confirmation) {
+          if (!user.comparePassword(request.old_password)) throw PASSWORD_WRONG;
 
-      user.setPassword(request.new_password_confirmation);
+          user.setPassword(request.new_password_confirmation);
 
-      const userToken =
-        await this.repository.userToken.selectByUserIdAndIsRevoked(
-          user.getId(),
-          false
-        );
+          const userToken =
+            await this.repository.userToken.selectByUserIdAndIsRevoked(
+              user.getId(),
+              false
+            );
 
-      if (!userToken) throw UNAUTHORIZED;
+          if (!userToken) throw UNAUTHORIZED;
 
-      await this.repository.userToken.delete(userToken);
-    }
+          await this.repository.userToken.deleteTx(tx, userToken);
+        }
 
-    await this.repository.user.update(user);
+        await this.repository.user.updateTx(tx, user);
+      }
+    );
 
     return user.getInfo(this.configuration.application.base_url);
   }

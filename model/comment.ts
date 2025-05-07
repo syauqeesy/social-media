@@ -111,14 +111,14 @@ class Comment {
     return this.deleted_at;
   }
 
-  public getInfo(): CommentInfo {
+  public getInfo(baseUrl: string): CommentInfo {
     const user = this.getUser();
 
     if (!user) throw USER_CANNOT_BE_NULL;
 
     const info: CommentInfo = {
       id: this.getId(),
-      user: user.getInfo(),
+      user: user.getInfo(baseUrl),
       content: this.getContent(),
       created_at: this.getCreatedAt(),
     };
