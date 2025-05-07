@@ -49,13 +49,12 @@ class Http implements Bootable {
     this.application.disable("x-powered-by");
     this.application.disable("etag");
 
+    const repository = initRepository(this.database);
+
     initHandler(
       this.application,
-      initService(
-        this.configuration,
-        initRepository(this.database),
-        this.database
-      )
+      initService(this.configuration, repository, this.database),
+      repository.userToken
     );
 
     this.application.use((_: Request, response: Response) =>

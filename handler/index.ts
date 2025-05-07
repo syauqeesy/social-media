@@ -8,6 +8,8 @@ import user from "./user";
 import { RequestWithUserId } from "../type/common";
 import post from "./post";
 import comment from "./comment";
+import { UserTokenRepository } from "../repository/user-token";
+import initAuthenticationMiddleware from "../middleware/authentication";
 
 export type handlerFunction = (
   request: Request,
@@ -15,7 +17,13 @@ export type handlerFunction = (
   service: service
 ) => Promise<void>;
 
-export const initHandler = (application: Application, service: service) => {
+export const initHandler = (
+  application: Application,
+  service: service,
+  userTokenRepository: UserTokenRepository
+) => {
+  const authentication = initAuthenticationMiddleware(userTokenRepository);
+
   // User
   application.post(
     "/api/v1/user",

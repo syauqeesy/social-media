@@ -4,36 +4,46 @@ import configuration from "../foundation/configuration";
 import { httpErrorHandler, writeResponse } from "../foundation/helper";
 import { RequestWithUserId } from "../type/common";
 import { UNAUTHORIZED } from "../exception/common";
+import { UserTokenRepository } from "../repository/user-token";
 
-const authentication = (
-  request: RequestWithUserId,
-  response: Response,
-  next: NextFunction
-): void => {
-  try {
-    const authenticationHeader = request.headers.authorization;
+const authentication =
+  (userTokenRepository: UserTokenRepository) =>
+  async (
+    request: RequestWithUserId,
+    response: Response,
+    next: NextFunction
+  ): Promise<void> => {
+    try {
+      const authenticationHeader = request.headers.authorization;
 
-    if (!authenticationHeader) throw UNAUTHORIZED;
+      if (!authenticationHeader) throw UNAUTHORIZED;
 
-    const headerValues = authenticationHeader.split(" ");
+      const headerValues = authenticationHeader.split(" ");
 
-    if (headerValues.length !== 2) throw UNAUTHORIZED;
+      if (headerValues.length !== 2) throw UNAUTHORIZED;
 
-    const payload = jsonwebtoken.verify(
-      headerValues[1],
-      configuration.application.secret
-    ) as { user_id: string; iat: number; exp: number };
+      const payload = jsonwebtoken.verify(
+        headerValues[1],
+        configuration.application.secret
+      ) as { user_id: string; iat: number; exp: number };
 
-    if (!payload.user_id) throw UNAUTHORIZED;
+      if (!payload.user_id) throw UNAUTHORIZED;
 
-    request.userId = payload.user_id;
+      const userToken = await userTokenRepository.selectByUserIdAndIsRevoked(
+        payload.user_id,
+        false
+      );
 
-    return next();
-  } catch (error: unknown) {
-    if (error instanceof Error) console.log(error.message);
+      if (userToken === null) throw UNAUTHORIZED;
 
-    httpErrorHandler(response, UNAUTHORIZED);
-  }
-};
+      request.userId = payload.user_id;
+
+      return next();
+    } catch (error: unknown) {
+      if (error instanceof Error) console.log(error.message);
+
+      httpErrorHandler(response, UNAUTHORIZED);
+    }
+  };
 
 export default authentication;
