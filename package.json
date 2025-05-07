@@ -8,6 +8,7 @@
     "start-dev": "nodemon ./dist/index.js",
     "typescript": "tsc",
     "typescript-watch": "tsc --watch",
+    "test": "jest",
     "format": "prettier . --write"
   },
   "repository": {
@@ -39,9 +40,12 @@
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.10",
     "prettier": "^3.5.3",
+    "ts-jest": "^29.3.2",
     "typescript": "^5.8.3"
   }
 }

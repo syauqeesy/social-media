@@ -17,20 +17,20 @@ export class Attachment extends Repository implements AttachmentRepository {
       async (poolConnection: PoolConnection): Promise<AttachmentModel[]> => {
         const attachments: AttachmentModel[] = [];
         const [results] = await poolConnection.query<RowDataPacket[]>(
-          "SELECT * FROM attachments WHERE post_id = ? AND deleted_at IS NULL LIMIT 1",
+          "SELECT * FROM attachments WHERE post_id = ? AND deleted_at IS NULL",
           [postId]
         );
 
         for (const result of results) {
           attachments.push(
             new AttachmentModel({
-              id: result[0].id,
-              post_id: result[0].post_id,
-              name: result[0].name,
-              original_name: result[0].original_name,
-              created_at: result[0].created_at,
-              updated_at: result[0].updated_at,
-              deleted_at: result[0].deleted_at,
+              id: result.id,
+              post_id: result.post_id,
+              name: result.name,
+              original_name: result.original_name,
+              created_at: result.created_at,
+              updated_at: result.updated_at,
+              deleted_at: result.deleted_at,
             })
           );
         }
