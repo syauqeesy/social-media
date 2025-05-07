@@ -4,13 +4,13 @@
 The project is created as the requirement in the BRI Life recruitment process. This project is implemented OOP and Dependency Injection pattern. The design pattern that implemented including Facade Pattern, Interface Seggregation (in `foundation/database.ts`), Adapter (`foundation/http.ts` and `foundation/database.ts`). And it using service, model, repository pattern. All of that is aims to achive ease of maintainablity, single responsibility principle, better organization of the project codebase.
 
 ## Get Started
-Create a `.env` file in root folder, the example can be found in `.env.example`.
+Create a `.env` file in root folder, the example can be found in `.env.example`. For the `APPLICATION_SECRET` it can be filled with any random string but I recommend to generate a cryptographically secure random string.
 
 Requirements:
 * Node.js 22
 * MySQL ^5.7
 
-First you need to create database and run `init.sql` that can be found in root folder.
+First you need to create database and run/import `init.sql` that can be found in root folder.
 
 ### Scripts
 Transpile TypeScript files:
