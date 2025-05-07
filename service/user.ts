@@ -78,6 +78,15 @@ export class User extends Service implements UserService {
 
     if (user === null) throw USER_NOT_FOUND;
 
+    const existingUserToken =
+      await this.repository.userToken.selectByUserIdAndIsRevoked(
+        user.getId(),
+        false
+      );
+
+    if (existingUserToken !== null)
+      await this.repository.userToken.delete(existingUserToken);
+
     if (!user.comparePassword(request.password)) throw PASSWORD_WRONG;
 
     const signature = user.generateAccessToken(

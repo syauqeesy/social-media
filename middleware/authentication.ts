@@ -34,7 +34,11 @@ const authentication =
         false
       );
 
-      if (userToken === null) throw UNAUTHORIZED;
+      if (
+        userToken === null ||
+        (userToken && userToken.getAccessToken() !== headerValues[1])
+      )
+        throw UNAUTHORIZED;
 
       request.userId = payload.user_id;
 
