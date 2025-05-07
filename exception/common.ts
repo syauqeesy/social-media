@@ -11,3 +11,8 @@ export const INVALID_FILE_UPLOAD = new HttpException(
   "invalid file upload",
   HttpStatusCode.BadRequest
 );
+
+export const FILE_TOO_LARGE = new HttpException(
+  "file too large",
+  HttpStatusCode.BadRequest
+);
