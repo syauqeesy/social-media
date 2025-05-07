@@ -1,6 +1,7 @@
 import Repository from "./repository";
 import PostModel from "../model/post";
 import UserModel from "../model/user";
+import CommentModel from "../model/comment";
 import AttachmentModel from "../model/attachment";
 import { PoolConnection, RowDataPacket } from "mysql2/promise";
 
@@ -75,7 +76,57 @@ export class Post extends Repository implements PostRepository {
 
         post.setAttachments(attachments);
 
-        post.setComments([]);
+        const comments: CommentModel[] = [];
+        const commentUserIds: string[] = [];
+
+        const [commentResults] = await poolConnection.query<RowDataPacket[]>(
+          "SELECT * FROM comments WHERE post_id = ? AND deleted_at IS NULL LIMIT 1",
+          [post.getId()]
+        );
+
+        for (const result of commentResults) {
+          commentUserIds.push(result.user_id);
+
+          comments.push(
+            new CommentModel({
+              id: result.id,
+              post_id: result.post_id,
+              user_id: result.user_id,
+              content: result.content,
+              created_at: result.created_at,
+              updated_at: result.updated_at,
+              deleted_at: result.deleted_at,
+            })
+          );
+        }
+
+        if (commentUserIds.length > 0) {
+          const userComments: { [key: string]: UserModel } = {};
+
+          const [userCommentResults] = await poolConnection.query<
+            RowDataPacket[]
+          >("SELECT * FROM users WHERE id IN (?) AND deleted_at IS NULL", [
+            commentUserIds,
+          ]);
+
+          for (const userComment of userCommentResults) {
+            userComments[userComment.id] = new UserModel({
+              id: userComment.id,
+              username: userComment.username,
+              password: userComment.password,
+              avatar: userComment.avatar,
+              created_at: userComment.created_at,
+              updated_at: userComment.updated_at,
+              deleted_at: userComment.deleted_at,
+            });
+          }
+
+          for (const index in comments) {
+            comments[index].setUser(userComments[comments[index].getUserId()]);
+          }
+
+          post.setComments(comments);
+        }
 
         return post;
       }

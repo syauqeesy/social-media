@@ -1,5 +1,6 @@
 import { Queryable } from "../foundation/database";
 import { Attachment, AttachmentRepository } from "./attachment";
+import { Comment, CommentRepository } from "./comment";
 import { Post, PostRepository } from "./post";
 import { User, UserRepository } from "./user";
 import { UserToken, UserTokenRepository } from "./user-token";
@@ -9,6 +10,7 @@ export interface repository {
   userToken: UserTokenRepository;
   post: PostRepository;
   attachment: AttachmentRepository;
+  comment: CommentRepository;
 }
 
 export const initRepository = (database: Queryable): repository => {
@@ -17,6 +19,7 @@ export const initRepository = (database: Queryable): repository => {
     userToken: new UserToken(database),
     post: new Post(database),
     attachment: new Attachment(database),
+    comment: new Comment(database),
   };
 
   return r;

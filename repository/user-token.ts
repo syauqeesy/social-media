@@ -29,7 +29,7 @@ export class UserToken extends Repository implements UserTokenRepository {
 
         if (results.length !== 1) return null;
 
-        const user = new UserTokenModel({
+        const userToken = new UserTokenModel({
           id: results[0].id,
           user_id: results[0].user_id,
           access_token: results[0].access_token,
@@ -38,7 +38,7 @@ export class UserToken extends Repository implements UserTokenRepository {
           updated_at: results[0].updated_at,
         });
 
-        return user;
+        return userToken;
       }
     );
   }

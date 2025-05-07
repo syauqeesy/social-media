@@ -7,6 +7,7 @@ import { service } from "../service";
 import user from "./user";
 import { RequestWithUserId } from "../type/common";
 import post from "./post";
+import comment from "./comment";
 
 export type handlerFunction = (
   request: Request,
@@ -70,5 +71,19 @@ export const initHandler = (application: Application, service: service) => {
     [authentication],
     (request: RequestWithUserId, response: Response) =>
       post.delete(request, response, service)
+  );
+
+  // Comment
+  application.post(
+    "/api/v1/comment",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      comment.create(request, response, service)
+  );
+  application.delete(
+    "/api/v1/comment/:id",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      comment.delete(request, response, service)
   );
 };
