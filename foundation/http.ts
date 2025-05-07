@@ -10,6 +10,7 @@ import Database, { Queryable, Transactionable } from "./database";
 import { initHandler } from "../handler";
 import { initService } from "../service";
 import { initRepository } from "../repository";
+import logRequest from "../middleware/log-request";
 
 class Http implements Bootable {
   private configuration: Configuration;
@@ -48,6 +49,8 @@ class Http implements Bootable {
 
     this.application.disable("x-powered-by");
     this.application.disable("etag");
+
+    this.application.use(logRequest);
 
     const repository = initRepository(this.database);
 

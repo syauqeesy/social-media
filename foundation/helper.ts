@@ -4,6 +4,7 @@ import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpStatusMessage } from "../enum/http-status-message";
 import HttpException from "../exception/exception";
 import { PaginationInfo } from "../type/common";
+import LogFacade from "../facade/logger/logger";
 
 export const writeResponse = <Data>(
   response: Response,
@@ -28,7 +29,7 @@ export const writeResponse = <Data>(
 
 export const httpErrorHandler = (response: Response, error: unknown) => {
   if (error instanceof ValidationError) {
-    console.warn(error.errors);
+    LogFacade.warn(error.errors);
 
     return writeResponse(
       response,
@@ -42,7 +43,7 @@ export const httpErrorHandler = (response: Response, error: unknown) => {
     error instanceof HttpException &&
     error.getStatusCode() !== HttpStatusCode.InternalServerError
   ) {
-    console.warn(error);
+    LogFacade.warn(error);
 
     return writeResponse(
       response,
@@ -56,7 +57,7 @@ export const httpErrorHandler = (response: Response, error: unknown) => {
     error instanceof HttpException &&
     error.getStatusCode() === HttpStatusCode.InternalServerError
   ) {
-    console.error(error);
+    LogFacade.error(error);
 
     return writeResponse(
       response,
@@ -66,7 +67,7 @@ export const httpErrorHandler = (response: Response, error: unknown) => {
     );
   }
 
-  if (error instanceof Error) console.error(error);
+  if (error instanceof Error) LogFacade.error(error);
 
   writeResponse(
     response,
