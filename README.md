@@ -1,7 +1,7 @@
 # Social Media
 
 ## Introduction
-The project is created as the requirement in the BRI Life recruitment process. This project is implemented OOP and Dependency Injection pattern. The design pattern that implemented including Facade Pattern, Interface Seggregation (in `foundation/database.ts`), Adapter (`foundation/http.ts` and `foundation/database.ts`). And it using service, model, repository pattern. All of that is aims to achive ease of maintainablity, single responsibility principle, better organization of the project codebase.
+The project is created as the requirement in the BRI Life recruitment process. This project is implemented OOP and Dependency Injection pattern. The design pattern that implemented including Facade Pattern, Interface Segregation (in `foundation/database.ts`), Adapter (in `foundation/http.ts` and `foundation/database.ts`). And it using service, model, repository pattern. All of that is aims to achive ease of maintainability, single responsibility principle and good organization of the project codebase.
 
 ## Get Started
 Create a `.env` file in root folder, the example can be found in `.env.example`. For the `APPLICATION_SECRET` it can be filled with any random string but I recommend to generate a cryptographically secure random string.
