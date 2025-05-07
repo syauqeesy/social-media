@@ -44,7 +44,7 @@ class Http implements Bootable {
 
     this.application.use(
       "/storage",
-      express.static(path.join(__dirname, "../", "../", "storage"))
+      express.static(path.join(__dirname, "../", "../", "storage", "public"))
     );
 
     this.application.disable("x-powered-by");

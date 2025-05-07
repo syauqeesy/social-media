@@ -16,10 +16,10 @@ const storage = multer.diskStorage({
 
     switch (request.path) {
       case "/api/v1/user":
-        destination = "./storage/avatar";
+        destination = "./storage/public/avatar";
         break;
       case "/api/v1/post":
-        destination = "./storage/attachment";
+        destination = "./storage/public/attachment";
         break;
       default:
         return callback(UNACCEPTABLE_PAYLOAD, destination);
