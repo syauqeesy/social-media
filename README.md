@@ -29,10 +29,10 @@ You can import the postman api docs using this [social-media-api-docs.json](./so
 Some API are protected by authentication and authorization like in update and delete api, current user must be the owner of the resource if He wants to modify it. The authentication is using JWT and the tokens are stored in database for added security for manual invocation if the `access_token` is compromised and make sure that after the user logged out the token can't be used.
 
 ### Input Validation
-All of the user input including body, files, path params and query params are validated before entering the service layer.
+All of the user input including body, files, path params and query params are validated before entering the service layer and all of the request validation class are stored in `request` folder.
 
 ### Error Handling
-All the possible error including user input error or system error like database error are handled properly and the management of the error is centralized in `foundation/helper.ts/httpErrorHandler` to make sure all sensitive information is not leaked to the front end and the user will just get `500 internal server error` if the error was a system error.
+All the possible error including user input error or system error like database error are handled properly and the management of the error is centralized in `foundation/helper.ts/httpErrorHandler` and `exception` folder to make sure all sensitive information is not leaked to the front end and the user will just get `500 internal server error` if the error was a system error.
 
 ### SQL Prepared Statements
 All of the query that has user input inside is using the prepared statements to make sure the query statement and data are separated to prevent SQL Injection.
