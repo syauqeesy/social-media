@@ -12,10 +12,14 @@ const upload = (upload: RequestHandler) => {
     next: NextFunction
   ) => {
     upload(request, response, (error: unknown) => {
-      if (error instanceof MulterError) {
+      if (error instanceof MulterError && error.code === 'LIMIT_UNEXPECTED_FILE') {
         LogFacade.error(error);
 
         return httpErrorHandler(response, INVALID_FILE_UPLOAD);
+      }
+
+      if (error instanceof MulterError) {
+        return httpErrorHandler(response, error);
       }
 
       if (error instanceof Error) {
