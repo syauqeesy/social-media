@@ -4,7 +4,7 @@
 
 The project is created as the requirement in the BRI Life Backend Developer recruitment process. This project is implemented OOP and Dependency Injection pattern. The design pattern that implemented including Facade Pattern, Interface Segregation (in `foundation/database.ts`), Adapter (in `foundation/http.ts` and `foundation/database.ts`). And it using `service`, `model`, `repository` pattern. All of that is aims to achive ease of maintainability, single responsibility principle and good organization of the project codebase.
 
-The unit tests are also implemented using Jest in `service` and `repository` layer to make sure all the business processes are correct.
+The unit tests are also implemented using Jest in `service` and `repository` layer to make sure all the core business processes are correct.
 
 ## Get Started
 

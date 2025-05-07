@@ -130,8 +130,6 @@ export class Post extends Service implements PostService {
     userId: string,
     id: string
   ): Promise<PostModel> {
-    console.log(id);
-
     const user = await this.repository.user.selectById(userId);
 
     if (user === null) throw USER_NOT_FOUND;
