@@ -119,6 +119,7 @@ export class Post extends Service implements PostService {
 
     await this.database.transaction(
       async (tx: PoolConnection): Promise<void> => {
+        await this.repository.comment.deleteByPostIdTx(tx, post.getId());
         await this.repository.attachment.deleteByPostIdTx(tx, post.getId());
         await this.repository.post.deleteTx(tx, post);
       }

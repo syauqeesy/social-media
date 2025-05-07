@@ -6,6 +6,7 @@ export interface CommentRepository {
   selectById(id: string): Promise<CommentModel | null>;
   insert(comment: CommentModel): Promise<void>;
   delete(comment: CommentModel): Promise<void>;
+  deleteByPostIdTx(tx: PoolConnection, postId: string): Promise<void>;
 }
 
 export class Comment extends Repository implements CommentRepository {
@@ -54,9 +55,27 @@ export class Comment extends Repository implements CommentRepository {
   public async delete(comment: CommentModel): Promise<void> {
     return this.database.withConnection<void>(
       async (poolConnection: PoolConnection): Promise<void> => {
-        await poolConnection.query("DELETE FROM comments WHERE id = ?", [
-          comment.getId(),
-        ]);
+        comment.setDeletedAt();
+
+        await poolConnection.query(
+          "UPDATE comments SET deleted_at = ? WHERE id = ? AND deleted_at IS NULL",
+          [comment.getDeletedAt(), comment.getId()]
+        );
+      }
+    );
+  }
+
+  public async deleteByPostIdTx(
+    tx: PoolConnection,
+    postId: string
+  ): Promise<void> {
+    return this.database.withTransaction<void>(
+      tx,
+      async (tx: PoolConnection): Promise<void> => {
+        await tx.query(
+          "UPDATE comments SET deleted_at = ? WHERE post_id = ? AND deleted_at IS NULL",
+          [Date.now(), postId]
+        );
       }
     );
   }
