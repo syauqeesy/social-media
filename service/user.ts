@@ -13,16 +13,47 @@ import { LoginRequest } from "../request/login";
 import { EditUserRequest } from "./edit-user";
 import { UNAUTHORIZED } from "../exception/common";
 import { PoolConnection } from "mysql2/promise";
+import { PaginationRequest } from "../request/pagination";
+import { PaginationInfo } from "../type/common";
+import { dateHandler, paginationHelper } from "../foundation/helper";
+import { ShowUserRequest } from "../request/show-user";
 
 export interface UserService {
+  list(request: PaginationRequest): Promise<[UserInfo[], PaginationInfo]>;
   register(request: RegisterRequest): Promise<UserInfo>;
   login(request: LoginRequest): Promise<LoginResponse>;
-  show(userId: string): Promise<UserInfo>;
+  show(request: ShowUserRequest): Promise<UserInfo>;
   edit(userId: string, request: EditUserRequest): Promise<UserInfo>;
   logout(userId: string): Promise<void>;
 }
 
 export class User extends Service implements UserService {
+  public async list(
+    request: PaginationRequest
+  ): Promise<[UserInfo[], PaginationInfo]> {
+    const paginatedUserInfos: UserInfo[] = [];
+
+    const [users, total] = await this.repository.user.selectPaginate(
+      request.page,
+      request.limit,
+      request.sort,
+      dateHandler(request.from),
+      dateHandler(request.to, true),
+      request.q ? request.q : ""
+    );
+
+    for (const user of users) {
+      paginatedUserInfos.push(
+        user.getInfo(this.configuration.application.base_url)
+      );
+    }
+
+    return [
+      paginatedUserInfos,
+      paginationHelper(total, request.page, request.limit),
+    ];
+  }
+
   public async register(request: RegisterRequest): Promise<UserInfo> {
     const alreadyExist = await this.repository.user.selectByUsername(
       request.username
@@ -66,8 +97,8 @@ export class User extends Service implements UserService {
     };
   }
 
-  public async show(userId: string): Promise<UserInfo> {
-    const user = await this.repository.user.selectById(userId);
+  public async show(request: ShowUserRequest): Promise<UserInfo> {
+    const user = await this.repository.user.selectById(request.id);
 
     if (user === null) throw USER_NOT_FOUND;
 

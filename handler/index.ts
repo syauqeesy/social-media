@@ -39,7 +39,13 @@ export const initHandler = (
   application.get(
     "/api/v1/user",
     [authentication],
-    (request: RequestWithUserId, response: Response) =>
+    (request: Request, response: Response) =>
+      user.list(request, response, service)
+  );
+  application.get(
+    "/api/v1/user/:id",
+    [authentication],
+    (request: Request, response: Response) =>
       user.show(request, response, service)
   );
   application.patch(
@@ -59,7 +65,7 @@ export const initHandler = (
   application.get(
     "/api/v1/post",
     [authentication],
-    (request: RequestWithUserId, response: Response) =>
+    (request: Request, response: Response) =>
       post.list(request, response, service)
   );
   application.get(

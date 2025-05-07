@@ -34,14 +34,8 @@ export class Post extends Repository implements PostRepository {
         poolConnection: PoolConnection
       ): Promise<[PostModel[], number]> => {
         const [resultCount] = await poolConnection.query<RowDataPacket[]>(
-          `SELECT COUNT(*) TOTAL_DATA FROM posts WHERE LOWER(caption) LIKE ? AND created_at BETWEEN ? AND ? AND deleted_at IS NULL ORDER BY created_at ${sort} LIMIT 1`,
-          [
-            `%${q.toLowerCase()}%`,
-            from,
-            to,
-            limit,
-            page === 1 ? page - 1 : page,
-          ]
+          `SELECT COUNT(*) AS TOTAL_DATA FROM posts WHERE LOWER(caption) LIKE ? AND created_at BETWEEN ? AND ? AND deleted_at IS NULL ORDER BY created_at ${sort} LIMIT 1`,
+          [`%${q.toLowerCase()}%`, from, to]
         );
 
         const total =
