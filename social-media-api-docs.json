@@ -1,0 +1,1377 @@
+{
+	"info": {
+		"_postman_id": "1ef9fde5-7bc0-4253-835c-539be5e99866",
+		"name": "Social Media",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12119021"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "syauqeesy1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "rahasia111",
+									"type": "text"
+								},
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/C:/Users/syauq/Downloads/seo-yea-ji-2_169.jpeg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "username",
+											"value": "syauqeesy1",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "rahasia111",
+											"type": "text"
+										},
+										{
+											"key": "avatar",
+											"type": "file",
+											"src": "/C:/Users/syauq/Downloads/seo-yea-ji-2_169.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/user",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "210"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 06 May 2025 13:45:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a5d8-4eb8-7228-8bcd-498b1e790e42\",\n        \"username\": \"syauqeesy1\",\n        \"avatar\": \"http://localhost:3000/storage/avatar/0196a5d8-4eaa-762a-9183-aa374c6078ab.jpeg\",\n        \"created_at\": 1746539138744\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.data && response.data.token) {\r",
+									"  pm.environment.set(\"ACCESS_TOKEN\", response.data.token);\r",
+									"} else {\r",
+									"  console.warn(\"No access_token found in response.\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"syauqeesy1\",\r\n    \"password\": \"rahasia1111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user/login",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"syauqeesy\",\r\n    \"password\": \"rahasia1111\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/user/login",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "229"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 06 May 2025 13:45:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiMDE5NmE1ZDEtMWY4My03MDM5LWFlNzgtNmI2ZDZmZmE2NjkwIiwiaWF0IjoxNzQ2NTM5MTEwLCJleHAiOjM0OTMwODE4MjB9.c3k7KAesfzr0oNSHkXkJL866QRyc2Fk6_zzTo0dNK1s\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Detail",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0196a5f2-1c1e-7284-a032-c489eb0b3af4"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/user/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "0196a5f2-1c1e-7284-a032-c489eb0b3af4"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "210"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 07:46:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n        \"username\": \"syauqeesy1\",\n        \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n        \"created_at\": 1746540829726\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"description": "optional (choose change pass or change avatar)",
+									"type": "file",
+									"src": "/C:/Users/syauq/Downloads/seo-yea-ji-2_169.jpeg"
+								},
+								{
+									"key": "old_password",
+									"value": "rahasia111",
+									"description": "optional (choose change pass or change avatar)",
+									"type": "text"
+								},
+								{
+									"key": "new_password",
+									"value": "rahasia1111",
+									"description": "optional (choose change pass or change avatar)",
+									"type": "text"
+								},
+								{
+									"key": "new_password_confirmation",
+									"value": "rahasia1111",
+									"description": "optional (choose change pass or change avatar)",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "avatar",
+											"type": "file",
+											"src": "/C:/Users/syauq/Downloads/seo-yea-ji-2_169.jpeg"
+										},
+										{
+											"key": "old_password",
+											"value": "rahasia111",
+											"type": "text"
+										},
+										{
+											"key": "new_password",
+											"value": "rahasia1111",
+											"type": "text"
+										},
+										{
+											"key": "new_password_confirmation",
+											"value": "rahasia1111",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/user",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "209"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 06 May 2025 13:44:38 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a5d1-1f83-7039-ae78-6b6d6ffa6690\",\n        \"username\": \"syauqeesy\",\n        \"avatar\": \"http://localhost:3000/storage/avatar/0196a5d7-646c-70c8-a7b5-3d9f1168278c.jpeg\",\n        \"created_at\": 1746538667909\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user/logout",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/user/logout",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 06 May 2025 14:20:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/user?from=2025-05-06&to=2025-05-07&sort=ASC&page=1&limit=5&q=sy",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"user"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2025-05-06",
+									"description": "YYYY-MM-DD (optional)"
+								},
+								{
+									"key": "to",
+									"value": "2025-05-07",
+									"description": "YYYY-MM-DD (optional)"
+								},
+								{
+									"key": "sort",
+									"value": "ASC",
+									"description": "ASC | DESC (optional)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional)"
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "5 | 10 (optional)"
+								},
+								{
+									"key": "q",
+									"value": "sy",
+									"description": "Search query (optional)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/user",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"user"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "256"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 07:47:53 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": [\n        {\n            \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n            \"username\": \"syauqeesy1\",\n            \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n            \"created_at\": 1746540829726\n        }\n    ],\n    \"pagination\": {\n        \"page\": 1,\n        \"limit\": 5,\n        \"total\": 1\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "caption",
+									"value": "coba in iposss pertama",
+									"type": "text"
+								},
+								{
+									"key": "attachments",
+									"description": "can be multiple",
+									"type": "file",
+									"src": "/C:/Users/syauq/Downloads/seo-yea-ji-2_169.jpeg"
+								},
+								{
+									"key": "attachments",
+									"description": "can be multiple",
+									"type": "file",
+									"src": "/C:/Users/syauq/Downloads/fabrizio-conti-kXVogATbFgA-unsplash.jpg"
+								},
+								{
+									"key": "attachments",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/post",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "caption",
+											"value": "coba in iposss pertama",
+											"type": "text"
+										},
+										{
+											"key": "attachments",
+											"type": "file",
+											"src": "/C:/Users/syauq/Downloads/seo-yea-ji-2_169.jpeg"
+										},
+										{
+											"key": "attachments",
+											"type": "file",
+											"src": "/C:/Users/syauq/Downloads/fabrizio-conti-kXVogATbFgA-unsplash.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/post",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"post"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "767"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 02:34:46 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a898-78a0-73a7-90ab-d8c9fbe21664\",\n        \"user\": {\n            \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n            \"username\": \"syauqeesy1\",\n            \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n            \"created_at\": 1746540829726\n        },\n        \"caption\": \"coba in iposss pertama\",\n        \"attachments\": [\n            {\n                \"id\": \"0196a898-78a0-73a7-90ab-dd6064683594\",\n                \"url\": \"0196a898-77d9-73be-968f-4b9d199ecfe3.jpeg\",\n                \"original_name\": \"http://localhost:3000/storage/attachment/0196a898-77d9-73be-968f-4b9d199ecfe3.jpeg\"\n            },\n            {\n                \"id\": \"0196a898-78a1-741f-bc1b-dadfc0e7da8b\",\n                \"url\": \"0196a898-77dc-72e8-ad8b-7dbd4505a5e1.jpeg\",\n                \"original_name\": \"http://localhost:3000/storage/attachment/0196a898-77dc-72e8-ad8b-7dbd4505a5e1.jpeg\"\n            }\n        ],\n        \"comments\": [],\n        \"created_at\": 1746585286816,\n        \"updated_at\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Edit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"caption\": \"dibah yaaaa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/post/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0196a8c3-d93e-71c8-b0ca-eb56c6978a06"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"caption\": \"dibah yaaaa\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/post/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"post",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "0196a8c3-d93e-71c8-b0ca-eb56c6978a06"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "568"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 03:28:01 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a8c3-d93e-71c8-b0ca-eb56c6978a06\",\n        \"user\": {\n            \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n            \"username\": \"syauqeesy1\",\n            \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n            \"created_at\": 1746540829726\n        },\n        \"caption\": \"dibah yaaaa\",\n        \"attachments\": [\n            {\n                \"id\": \"0196a8c3-d93f-70c9-87df-07f967da655f\",\n                \"url\": \"0196a8c3-d8e7-7049-9384-9f49df052807.jpeg\",\n                \"original_name\": \"http://localhost:3000/storage/attachment/0196a8c3-d8e7-7049-9384-9f49df052807.jpeg\"\n            }\n        ],\n        \"comments\": [],\n        \"created_at\": 1746588129599,\n        \"updated_at\": 1746588481944\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/post/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0196a895-5ab3-75dd-bff9-62be89243bde"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/post/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"post",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "0196a895-5ab3-75dd-bff9-62be89243bde"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 03:29:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": null\n}"
+						}
+					]
+				},
+				{
+					"name": "Show",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/post/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0196a8c3-d93e-71c8-b0ca-eb56c6978a06"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/post/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"post",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "0196a8c3-d93e-71c8-b0ca-eb56c6978a06"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "859"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 04:44:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a8c3-d93e-71c8-b0ca-eb56c6978a06\",\n        \"user\": {\n            \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n            \"username\": \"syauqeesy1\",\n            \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n            \"created_at\": 1746540829726\n        },\n        \"caption\": \"dibah yaaaa\",\n        \"attachments\": [\n            {\n                \"id\": \"0196a8c3-d93f-70c9-87df-07f967da655f\",\n                \"url\": \"0196a8c3-d8e7-7049-9384-9f49df052807.jpeg\",\n                \"original_name\": \"http://localhost:3000/storage/attachment/0196a8c3-d8e7-7049-9384-9f49df052807.jpeg\"\n            }\n        ],\n        \"comments\": [\n            {\n                \"id\": \"0196a90e-46b7-72da-99f5-17eb107b9724\",\n                \"user\": {\n                    \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n                    \"username\": \"syauqeesy1\",\n                    \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n                    \"created_at\": 1746540829726\n                },\n                \"content\": \"cobain komen\",\n                \"created_at\": 1746593007288\n            }\n        ],\n        \"created_at\": 1746588129599,\n        \"updated_at\": 1746588778658\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/post?from=2025-05-06&to=2025-05-07&sort=ASC&page=1&limit=5&q=dibah",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post"
+							],
+							"query": [
+								{
+									"key": "from",
+									"value": "2025-05-06",
+									"description": "YYYY-MM-DD (optional)"
+								},
+								{
+									"key": "to",
+									"value": "2025-05-07",
+									"description": "YYYY-MM-DD (optional)"
+								},
+								{
+									"key": "sort",
+									"value": "ASC",
+									"description": "ASC | DESC (optional)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "(optional)"
+								},
+								{
+									"key": "limit",
+									"value": "5",
+									"description": "5 | 10 (optional)"
+								},
+								{
+									"key": "q",
+									"value": "dibah",
+									"description": "Search query (optional)"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/post?from=2025-05-06&to=2025-05-07&sort=ASC&page=1&limit=5&q=dibah",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"post"
+									],
+									"query": [
+										{
+											"key": "from",
+											"value": "2025-05-06",
+											"description": "YYYY-MM-DD (optional)"
+										},
+										{
+											"key": "to",
+											"value": "2025-05-07",
+											"description": "YYYY-MM-DD (optional)"
+										},
+										{
+											"key": "sort",
+											"value": "ASC",
+											"description": "ASC | DESC (optional)"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "(optional)"
+										},
+										{
+											"key": "limit",
+											"value": "5",
+											"description": "5 | 10 (optional)"
+										},
+										{
+											"key": "q",
+											"value": "dibah",
+											"description": "Search query (optional)"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "797"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 06:58:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": [\n        {\n            \"id\": \"0196a8c3-d93e-71c8-b0ca-eb56c6978a06\",\n            \"user\": {\n                \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n                \"username\": \"syauqeesy1\",\n                \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n                \"created_at\": 1746540829726\n            },\n            \"caption\": \"dibah yaaaa\",\n            \"attachments\": [\n                {\n                    \"id\": \"0196a8c3-d93f-70c9-87df-07f967da655f\",\n                    \"url\": \"0196a8c3-d8e7-7049-9384-9f49df052807.jpeg\",\n                    \"original_name\": \"http://localhost:3000/storage/attachment/0196a8c3-d8e7-7049-9384-9f49df052807.jpeg\"\n                },\n                {\n                    \"id\": \"0196a8c3-d940-7595-9560-2996bd67c102\",\n                    \"url\": \"0196a8c3-d8ee-701b-898e-6a3430463827.jpeg\",\n                    \"original_name\": \"http://localhost:3000/storage/attachment/0196a8c3-d8ee-701b-898e-6a3430463827.jpeg\"\n                }\n            ],\n            \"created_at\": 1746588129599,\n            \"updated_at\": 1746588778658\n        }\n    ],\n    \"pagination\": {\n        \"page\": 1,\n        \"limit\": 5,\n        \"total\": 1\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"post_id\": \"0196a8c3-d93e-71c8-b0ca-eb56c6978a06\",\r\n    \"content\": \"cobain komen\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/comment",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"post_id\": \"0196a8c3-d93e-71c8-b0ca-eb56c6978a06\",\r\n    \"content\": \"cobain komen\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/comment",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"comment"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "315"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 04:26:58 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": {\n        \"id\": \"0196a8ff-2ea3-74ac-9bca-023d8f806248\",\n        \"user\": {\n            \"id\": \"0196a5f2-1c1e-7284-a032-c489eb0b3af4\",\n            \"username\": \"syauqeesy1\",\n            \"avatar\": \"http://localhost:3000/storage/avatar/0196a5f2-1c11-7078-9df7-a6cb19e408a7.jpeg\",\n            \"created_at\": 1746540829726\n        },\n        \"content\": \"cobain komen\",\n        \"created_at\": 1746592018085\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{ACCESS_TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/api/v1/comment/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"comment",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "0196a8ff-2ea3-74ac-9bca-023d8f806248"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASE_URL}}/api/v1/comment/:id",
+									"host": [
+										"{{BASE_URL}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"comment",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "0196a8ff-2ea3-74ac-9bca-023d8f806248"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 07 May 2025 04:28:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"ok\",\n    \"data\": null\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
