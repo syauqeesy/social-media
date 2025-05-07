@@ -12,13 +12,13 @@ const upload = (upload: RequestHandler) => {
     next: NextFunction
   ) => {
     upload(request, response, (error: unknown) => {
-      if (error instanceof MulterError || error instanceof Error) {
-        if (error instanceof MulterError) {
-          LogFacade.error(error);
+      if (error instanceof MulterError) {
+        LogFacade.error(error);
 
-          return httpErrorHandler(response, INVALID_FILE_UPLOAD);
-        }
+        return httpErrorHandler(response, INVALID_FILE_UPLOAD);
+      }
 
+      if (error instanceof Error) {
         return httpErrorHandler(response, error);
       }
 
