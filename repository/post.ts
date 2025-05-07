@@ -6,6 +6,14 @@ import AttachmentModel from "../model/attachment";
 import { PoolConnection, RowDataPacket } from "mysql2/promise";
 
 export interface PostRepository {
+  selectPaginate(
+    page: number,
+    limit: number,
+    sort: "ASC" | "DESC",
+    from: number,
+    to: number,
+    q: string
+  ): Promise<[PostModel[], number]>;
   selectById(id: string): Promise<PostModel | null>;
   insertTx(tx: PoolConnection, post: PostModel): Promise<void>;
   update(post: PostModel): Promise<void>;
@@ -13,6 +21,134 @@ export interface PostRepository {
 }
 
 export class Post extends Repository implements PostRepository {
+  selectPaginate(
+    page: number,
+    limit: number,
+    sort: "ASC" | "DESC",
+    from: number,
+    to: number,
+    q: string
+  ): Promise<[PostModel[], number]> {
+    return this.database.withConnection<[PostModel[], number]>(
+      async (
+        poolConnection: PoolConnection
+      ): Promise<[PostModel[], number]> => {
+        const [resultCount] = await poolConnection.query<RowDataPacket[]>(
+          `SELECT COUNT(*) TOTAL_DATA FROM posts WHERE LOWER(caption) LIKE ? AND created_at BETWEEN ? AND ? AND deleted_at IS NULL ORDER BY created_at ${sort} LIMIT 1`,
+          [
+            `%${q.toLowerCase()}%`,
+            from,
+            to,
+            limit,
+            page === 1 ? page - 1 : page,
+          ]
+        );
+
+        const total =
+          resultCount.length > 0 && resultCount[0].TOTAL_DATA
+            ? Number(resultCount[0].TOTAL_DATA)
+            : 0;
+
+        const [postResults] = await poolConnection.query<RowDataPacket[]>(
+          `SELECT * FROM posts WHERE LOWER(caption) LIKE ? AND created_at BETWEEN ? AND ? AND deleted_at IS NULL ORDER BY created_at ${sort} LIMIT ? OFFSET ?`,
+          [
+            `%${q.toLowerCase()}%`,
+            from,
+            to,
+            limit,
+            page === 1 ? page - 1 : page,
+          ]
+        );
+
+        const posts: PostModel[] = [];
+        const postIds: string[] = [];
+        const postUserIds: string[] = [];
+
+        for (const post of postResults) {
+          postIds.push(post.id);
+          postUserIds.push(post.user_id);
+
+          posts.push(
+            new PostModel({
+              id: post.id,
+              user_id: post.user_id,
+              caption: post.caption,
+              attachments: [],
+              comments: [],
+              created_at: post.created_at,
+              updated_at: post.updated_at,
+              deleted_at: post.deleted_at,
+            })
+          );
+        }
+
+        if (postUserIds.length > 0) {
+          const postUsers: { [key: string]: UserModel } = {};
+
+          const [userResults] = await poolConnection.query<RowDataPacket[]>(
+            "SELECT * FROM users WHERE id IN (?) AND deleted_at IS NULL",
+            [postUserIds]
+          );
+
+          for (const user of userResults) {
+            postUsers[user.id] = new UserModel({
+              id: user.id,
+              username: user.username,
+              password: user.password,
+              avatar: user.avatar,
+              created_at: user.created_at,
+              updated_at: user.updated_at,
+              deleted_at: user.deleted_at,
+            });
+          }
+
+          for (const index in posts) {
+            posts[index].setUser(postUsers[posts[index].getUserId()]);
+          }
+        }
+
+        if (postIds.length > 0) {
+          const attachments: AttachmentModel[] = [];
+
+          const [attachmentResults] = await poolConnection.query<
+            RowDataPacket[]
+          >(
+            "SELECT * FROM attachments WHERE post_id IN (?) AND deleted_at IS NULL",
+            [postIds]
+          );
+
+          for (const result of attachmentResults) {
+            attachments.push(
+              new AttachmentModel({
+                id: result.id,
+                post_id: result.post_id,
+                name: result.name,
+                original_name: result.original_name,
+                created_at: result.created_at,
+                updated_at: result.updated_at,
+                deleted_at: result.deleted_at,
+              })
+            );
+          }
+
+          for (const index in posts) {
+            const postAttachments: AttachmentModel[] = [];
+
+            for (const attachment of attachments) {
+              if (attachment.getPostId() !== posts[index].getId()) continue;
+
+              postAttachments.push(attachment);
+            }
+
+            posts[index].setAttachments(postAttachments);
+          }
+        }
+
+        return [posts, total];
+      }
+    );
+  }
+
   public async selectById(id: string): Promise<PostModel | null> {
     return this.database.withConnection<PostModel | null>(
       async (poolConnection: PoolConnection): Promise<PostModel | null> => {

@@ -1,7 +1,7 @@
 import { v7 as uuid } from "uuid";
 import { string } from "yup";
 import User from "./user";
-import { PostInfo } from "../type/post";
+import { PaginatedPostInfo, PostInfo } from "../type/post";
 import { USER_CANNOT_BE_NULL } from "../exception/post";
 import Attachment from "./attachment";
 import { AttachmentInfo } from "../type/attachment";
@@ -143,6 +143,29 @@ class Post {
       caption: this.getCaption(),
       attachments: attachmentInfos,
       comments: commentInfos,
+      created_at: this.getCreatedAt(),
+      updated_at: this.getUpdatedAt(),
+    };
+
+    return info;
+  }
+
+  public getPaginatedInfo(baseUrl: string): PaginatedPostInfo {
+    const user = this.getUser();
+
+    if (!user) throw USER_CANNOT_BE_NULL;
+
+    const attachmentInfos: AttachmentInfo[] = [];
+
+    for (const attachment of this.getAttachments()) {
+      attachmentInfos.push(attachment.getInfo(baseUrl));
+    }
+
+    const info: PaginatedPostInfo = {
+      id: this.getId(),
+      user: user.getInfo(baseUrl),
+      caption: this.getCaption(),
+      attachments: attachmentInfos,
       created_at: this.getCreatedAt(),
       updated_at: this.getUpdatedAt(),
     };

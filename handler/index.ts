@@ -1,15 +1,15 @@
 import { Application, Request, Response } from "express";
-import authentication from "../middleware/authentication";
+import initAuthenticationMiddleware from "../middleware/authentication";
 import upload from "../middleware/upload";
 import multipart from "../middleware/multipart";
 import { service } from "../service";
 
 import user from "./user";
-import { RequestWithUserId } from "../type/common";
 import post from "./post";
 import comment from "./comment";
 import { UserTokenRepository } from "../repository/user-token";
-import initAuthenticationMiddleware from "../middleware/authentication";
+
+import { RequestWithUserId } from "../type/common";
 
 export type handlerFunction = (
   request: Request,
@@ -56,6 +56,12 @@ export const initHandler = (
   );
 
   // Post
+  application.get(
+    "/api/v1/post",
+    [authentication],
+    (request: RequestWithUserId, response: Response) =>
+      post.list(request, response, service)
+  );
   application.get(
     "/api/v1/post/:id",
     [authentication],

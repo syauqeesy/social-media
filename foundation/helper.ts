@@ -3,17 +3,27 @@ import { ValidationError } from "yup";
 import { HttpStatusCode } from "../enum/http-status-code";
 import { HttpStatusMessage } from "../enum/http-status-message";
 import HttpException from "../exception/exception";
+import { PaginationInfo } from "../type/common";
 
 export const writeResponse = <Data>(
   response: Response,
   status: number,
   message: string,
-  data: Data | null
+  data: Data | null,
+  pagination?: PaginationInfo
 ) => {
-  response.status(status).json({
+  const payload: {
+    message: string;
+    data: Data | null;
+    pagination?: PaginationInfo;
+  } = {
     message,
     data,
-  });
+  };
+
+  if (pagination) payload.pagination = pagination;
+
+  response.status(status).json(payload);
 };
 
 export const httpErrorHandler = (response: Response, error: unknown) => {
@@ -64,4 +74,31 @@ export const httpErrorHandler = (response: Response, error: unknown) => {
     HttpStatusMessage[HttpStatusCode.InternalServerError],
     null
   );
+};
+
+export const dateHandler = (
+  date: string,
+  endOfDay: boolean = false
+): number => {
+  if (date === "0000-00-00") return 0;
+
+  const result = new Date(date);
+
+  result.setHours(0, 0, 0, 0);
+
+  if (endOfDay) result.setHours(23, 59, 59, 999);
+
+  return result.getTime();
+};
+
+export const paginationHelper = (
+  total: number,
+  page: number,
+  limit: 5 | 10
+): PaginationInfo => {
+  return {
+    page: page,
+    limit: limit,
+    total: total,
+  };
 };

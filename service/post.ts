@@ -1,16 +1,22 @@
 import { CreatePostRequest } from "../request/create-post";
 import { EditPostRequest } from "../request/edit-post";
 import { DeletePostRequest } from "../request/delete-post";
+import { PaginationRequest } from "../request/pagination";
 import { ShowPostRequest } from "./show-post";
-import { PostInfo } from "../type/post";
+import { PaginatedPostInfo, PostInfo } from "../type/post";
 import PostModel from "../model/post";
 import AttachmentModel from "../model/attachment";
 import Service from "./service";
 import { USER_NOT_FOUND } from "../exception/user";
 import { POST_NOT_FOUND } from "../exception/post";
 import { PoolConnection } from "mysql2/promise";
+import { dateHandler, paginationHelper } from "../foundation/helper";
+import { PaginationInfo } from "../type/common";
 
 export interface PostService {
+  list(
+    request: PaginationRequest
+  ): Promise<[PaginatedPostInfo[], PaginationInfo]>;
   show(request: ShowPostRequest): Promise<PostInfo>;
   create(userId: string, request: CreatePostRequest): Promise<PostInfo>;
   edit(userId: string, request: EditPostRequest): Promise<PostInfo>;
@@ -18,6 +24,32 @@ export interface PostService {
 }
 
 export class Post extends Service implements PostService {
+  public async list(
+    request: PaginationRequest
+  ): Promise<[PaginatedPostInfo[], PaginationInfo]> {
+    const paginatedPostInfos: PaginatedPostInfo[] = [];
+
+    const [posts, total] = await this.repository.post.selectPaginate(
+      request.page,
+      request.limit,
+      request.sort,
+      dateHandler(request.from),
+      dateHandler(request.to, true),
+      request.q ? request.q : ""
+    );
+
+    for (const post of posts) {
+      paginatedPostInfos.push(
+        post.getPaginatedInfo(this.configuration.application.base_url)
+      );
+    }
+
+    return [
+      paginatedPostInfos,
+      paginationHelper(total, request.page, request.limit),
+    ];
+  }
+
   public async show(request: ShowPostRequest): Promise<PostInfo> {
     const post = await this.repository.post.selectById(request.id);
 

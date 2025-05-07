@@ -11,3 +11,12 @@ export interface PostInfo {
   created_at: number;
   updated_at: number | null;
 }
+
+export interface PaginatedPostInfo {
+  id: string;
+  user: UserInfo;
+  caption: string;
+  attachments: AttachmentInfo[];
+  created_at: number;
+  updated_at: number | null;
+}
